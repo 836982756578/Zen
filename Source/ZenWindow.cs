@@ -903,13 +903,69 @@ namespace Zen
             if (notify) NotifyConfigChanged();
         }
 
+        private void GetScreenInfo(out Rect workArea, out Rect bounds)
+        {
+            try
+            {
+                IntPtr hwnd = new WindowInteropHelper(this).Handle;
+                System.Windows.Forms.Screen screen = null;
+
+                if (hwnd != IntPtr.Zero)
+                {
+                    screen = System.Windows.Forms.Screen.FromHandle(hwnd);
+                }
+
+                if (screen == null)
+                {
+                    int midX = (int)(Left + Width / 2);
+                    int midY = (int)(Top + Height / 2);
+                    screen = System.Windows.Forms.Screen.FromPoint(new System.Drawing.Point(midX, midY));
+                }
+
+                if (screen != null)
+                {
+                    double dpiX = 1.0;
+                    double dpiY = 1.0;
+                    PresentationSource source = PresentationSource.FromVisual(this);
+                    if (source != null && source.CompositionTarget != null)
+                    {
+                        dpiX = source.CompositionTarget.TransformToDevice.M11;
+                        dpiY = source.CompositionTarget.TransformToDevice.M22;
+                        if (dpiX <= 0) dpiX = 1.0;
+                        if (dpiY <= 0) dpiY = 1.0;
+                    }
+
+                    workArea = new Rect(
+                        screen.WorkingArea.Left / dpiX,
+                        screen.WorkingArea.Top / dpiY,
+                        screen.WorkingArea.Width / dpiX,
+                        screen.WorkingArea.Height / dpiY
+                    );
+
+                    bounds = new Rect(
+                        screen.Bounds.Left / dpiX,
+                        screen.Bounds.Top / dpiY,
+                        screen.Bounds.Width / dpiX,
+                        screen.Bounds.Height / dpiY
+                    );
+                    return;
+                }
+            }
+            catch
+            {
+            }
+
+            workArea = SystemParameters.WorkArea;
+            bounds = new Rect(0, 0, SystemParameters.PrimaryScreenWidth, SystemParameters.PrimaryScreenHeight);
+        }
+
         private void CheckDockState()
         {
-            double screenTop = SystemParameters.WorkArea.Top;
-            _isTopDocked = (Top <= screenTop + 4);
+            Rect workArea, bounds;
+            GetScreenInfo(out workArea, out bounds);
 
-            double screenBottom = SystemParameters.WorkArea.Bottom;
-            _isBottomDocked = ((Top + Height) >= screenBottom - 4);
+            _isTopDocked = (Top <= workArea.Top + 15);
+            _isBottomDocked = ((Top + Height) >= workArea.Bottom - 18 || (Top + Height) >= bounds.Bottom - 18);
         }
 
         private void UpdateLayoutForDocking()
@@ -1059,26 +1115,41 @@ namespace Zen
 
         private void OnDragMoveFinished()
         {
-            double screenTop = SystemParameters.WorkArea.Top;
-            double screenBottom = SystemParameters.WorkArea.Bottom;
+            Rect workArea, bounds;
+            GetScreenInfo(out workArea, out bounds);
 
-            if (Math.Abs(Top - screenTop) < 25)
+            double snapThreshold = 45.0; // Comfort zone for snapping
+
+            // 1. Check Top Docking
+            if (Math.Abs(Top - workArea.Top) <= snapThreshold || Top < workArea.Top)
             {
-                Top = screenTop;
+                Top = workArea.Top;
                 _isTopDocked = true;
                 _isBottomDocked = false;
             }
-            else if (Math.Abs((Top + Height) - screenBottom) < 25)
-            {
-                Top = screenBottom - Height;
-                _isBottomDocked = true;
-                _isTopDocked = false;
-            }
+            // 2. Check Bottom Docking (snaps to workArea.Bottom, resting right above the taskbar)
             else
             {
-                _isTopDocked = false;
-                _isBottomDocked = false;
+                double winBottom = Top + Height;
+                double taskbarTop = workArea.Bottom;
+                double screenBottomEdge = bounds.Bottom;
+
+                if (Math.Abs(winBottom - taskbarTop) <= snapThreshold ||
+                    Math.Abs(winBottom - screenBottomEdge) <= snapThreshold ||
+                    winBottom >= taskbarTop)
+                {
+                    Top = taskbarTop - Height;
+                    _isBottomDocked = true;
+                    _isTopDocked = false;
+                }
+                else
+                {
+                    _isTopDocked = false;
+                    _isBottomDocked = false;
+                }
             }
+
+            UpdateLayoutForDocking();
 
             Data.Left = Left;
             Data.Top = Top;
@@ -1117,7 +1188,7 @@ namespace Zen
             {
                 if (_autoHideTimer != null) _autoHideTimer.Stop();
 
-                _autoHideTimer = new DispatcherTimer { Interval = TimeSpan.FromMilliseconds(450) };
+                _autoHideTimer = new DispatcherTimer { Interval = TimeSpan.FromMilliseconds(350) };
                 _autoHideTimer.Tick += (s, ev) =>
                 {
                     _autoHideTimer.Stop();
@@ -1170,7 +1241,9 @@ namespace Zen
 
             if (_isBottomDocked)
             {
-                double screenBottom = SystemParameters.WorkArea.Bottom;
+                Rect workArea, bounds;
+                GetScreenInfo(out workArea, out bounds);
+                double screenBottom = workArea.Bottom;
                 targetTop = screenBottom - targetHeight;
             }
 
@@ -1202,6 +1275,9 @@ namespace Zen
                 else _row1.Height = new GridLength(1, GridUnitType.Star);
                 ApplyVisualStyles();
             }
+
+            BeginAnimation(Window.HeightProperty, null);
+            BeginAnimation(Window.TopProperty, null);
 
             double startHeight = ActualHeight;
             double startTop = Top;
