@@ -1376,27 +1376,50 @@ namespace Zen
                 if (_isBottomDocked) Top = targetTop;
 
                 _contentAreaGrid.Visibility = isCollapsed ? Visibility.Collapsed : Visibility.Visible;
-                _contentAreaGrid.Opacity = 1.0;
+                _contentAreaGrid.Opacity = isCollapsed ? 0.0 : 1.0;
                 _contentAreaGrid.IsHitTestVisible = !isCollapsed;
                 if (_bottomResizeBorder != null) _bottomResizeBorder.Visibility = isCollapsed ? Visibility.Collapsed : Visibility.Visible;
                 if (_bottomLeftResizeBorder != null) _bottomLeftResizeBorder.Visibility = isCollapsed ? Visibility.Collapsed : Visibility.Visible;
                 if (_bottomRightResizeGrip != null) _bottomRightResizeGrip.Visibility = isCollapsed ? Visibility.Collapsed : Visibility.Visible;
                 ApplyVisualStyles();
-                if (isCollapsed) NativeMethods.TrimWorkingSet();
                 return;
             }
 
-            if (!isCollapsed)
+            if (isCollapsed)
+            {
+                // Smoothly fade out contents in the first 120ms to prevent layout squish
+                DoubleAnimation fadeOut = new DoubleAnimation
+                {
+                    From = _contentAreaGrid.Opacity,
+                    To = 0.0,
+                    Duration = TimeSpan.FromMilliseconds(120),
+                    EasingFunction = new QuadraticEase { EasingMode = EasingMode.EaseOut }
+                };
+                _contentAreaGrid.BeginAnimation(UIElement.OpacityProperty, fadeOut);
+
+                if (_bottomResizeBorder != null) _bottomResizeBorder.Visibility = Visibility.Collapsed;
+                if (_bottomLeftResizeBorder != null) _bottomLeftResizeBorder.Visibility = Visibility.Collapsed;
+                if (_bottomRightResizeGrip != null) _bottomRightResizeGrip.Visibility = Visibility.Collapsed;
+            }
+            else
             {
                 _contentAreaGrid.Visibility = Visibility.Visible;
-                _contentAreaGrid.Opacity = 1.0;
                 _contentAreaGrid.IsHitTestVisible = true;
                 if (_bottomResizeBorder != null) _bottomResizeBorder.Visibility = Visibility.Visible;
                 if (_bottomLeftResizeBorder != null) _bottomLeftResizeBorder.Visibility = Visibility.Visible;
                 if (_bottomRightResizeGrip != null) _bottomRightResizeGrip.Visibility = Visibility.Visible;
+
+                DoubleAnimation fadeIn = new DoubleAnimation
+                {
+                    From = _contentAreaGrid.Opacity,
+                    To = 1.0,
+                    Duration = TimeSpan.FromMilliseconds(180),
+                    EasingFunction = new QuadraticEase { EasingMode = EasingMode.EaseOut }
+                };
+                _contentAreaGrid.BeginAnimation(UIElement.OpacityProperty, fadeIn);
+
                 if (_isTopDocked) _row0.Height = new GridLength(1, GridUnitType.Star);
                 else _row1.Height = new GridLength(1, GridUnitType.Star);
-                ApplyVisualStyles();
             }
 
             BeginAnimation(Window.HeightProperty, null);
@@ -1405,8 +1428,10 @@ namespace Zen
             double startHeight = ActualHeight;
             double startTop = Top;
 
-            TimeSpan duration = TimeSpan.FromMilliseconds(isCollapsed ? 210 : 240);
-            CubicEase easing = new CubicEase { EasingMode = EasingMode.EaseOut };
+            TimeSpan duration = TimeSpan.FromMilliseconds(isCollapsed ? 180 : 210);
+            IEasingFunction easing = isCollapsed
+                ? (IEasingFunction)new QuadraticEase { EasingMode = EasingMode.EaseInOut }
+                : (IEasingFunction)new CubicEase { EasingMode = EasingMode.EaseOut };
 
             DoubleAnimation heightAnim = new DoubleAnimation
             {
@@ -1439,17 +1464,30 @@ namespace Zen
                     Top = targetTop;
                 }
 
-                _contentAreaGrid.Opacity = 1.0;
-                _contentAreaGrid.Visibility = isCollapsed ? Visibility.Collapsed : Visibility.Visible;
-                _contentAreaGrid.IsHitTestVisible = !isCollapsed;
+                if (isCollapsed)
+                {
+                    _contentAreaGrid.Visibility = Visibility.Collapsed;
+                    _contentAreaGrid.IsHitTestVisible = false;
+                    _contentAreaGrid.Opacity = 0.0;
 
-                if (_bottomResizeBorder != null) _bottomResizeBorder.Visibility = isCollapsed ? Visibility.Collapsed : Visibility.Visible;
-                if (_bottomLeftResizeBorder != null) _bottomLeftResizeBorder.Visibility = isCollapsed ? Visibility.Collapsed : Visibility.Visible;
-                if (_bottomRightResizeGrip != null) _bottomRightResizeGrip.Visibility = isCollapsed ? Visibility.Collapsed : Visibility.Visible;
-
-                ApplyVisualStyles();
-                NotifyConfigChanged();
-                if (isCollapsed) NativeMethods.TrimWorkingSet();
+                    // Idle delayed working set trim (never causes animation stutter)
+                    DispatcherTimer trimTimer = new DispatcherTimer { Interval = TimeSpan.FromMilliseconds(1200) };
+                    trimTimer.Tick += (ts, te) =>
+                    {
+                        trimTimer.Stop();
+                        if (Data.IsCollapsed)
+                        {
+                            NativeMethods.TrimWorkingSet();
+                        }
+                    };
+                    trimTimer.Start();
+                }
+                else
+                {
+                    _contentAreaGrid.Opacity = 1.0;
+                    _contentAreaGrid.Visibility = Visibility.Visible;
+                    _contentAreaGrid.IsHitTestVisible = true;
+                }
             };
 
             BeginAnimation(Window.HeightProperty, heightAnim);
