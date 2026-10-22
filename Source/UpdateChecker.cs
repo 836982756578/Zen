@@ -18,7 +18,7 @@ namespace Zen
 {
     public static class UpdateChecker
     {
-        public const string CurrentVersion = "v1.0.0";
+        public const string CurrentVersion = "v1.0.1";
         private const string ApiUrl = "https://api.github.com/repos/836982756578/Zen/releases/latest";
         private const string ReleasesPageUrl = "https://github.com/836982756578/Zen/releases";
 

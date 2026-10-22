@@ -330,32 +330,31 @@ namespace Zen
             checkUpdateItem.Click += (s, e) => UpdateChecker.CheckForUpdateAsync(_trayIcon, isManual: true);
             contextMenu.Items.Add(checkUpdateItem);
 
+            // GitHub developer profile
+            ToolStripMenuItem devProfileItem = new ToolStripMenuItem("🌐 Geliştirici Sayfası (GitHub)");
+            devProfileItem.Click += (s, e) =>
+            {
+                try { Process.Start(new ProcessStartInfo(AboutDialog.DeveloperGitHubUrl) { UseShellExecute = true }); } catch { }
+            };
+            contextMenu.Items.Add(devProfileItem);
+
+            // GitHub project repository
+            ToolStripMenuItem projectRepoItem = new ToolStripMenuItem("⭐ Zen Fence GitHub");
+            projectRepoItem.Click += (s, e) =>
+            {
+                try { Process.Start(new ProcessStartInfo(AboutDialog.ProjectGitHubUrl) { UseShellExecute = true }); } catch { }
+            };
+            contextMenu.Items.Add(projectRepoItem);
+
             // About
             ToolStripMenuItem aboutItem = new ToolStripMenuItem("ℹ️ Zen Fence Hakkında");
             aboutItem.Click += (s, e) =>
             {
-                System.Windows.MessageBox.Show(
-                    "Zen Fence - Masaüstü Düzenleyici v1.0\n\n" +
-                    "🌟 Geliştirici: Serkan ŞENTÜRK\n" +
-                    "Telif Hakkı: © 2026 Serkan ŞENTÜRK. Tüm Hakları Saklıdır.\n\n" +
-                    "Bu uygulama Serkan ŞENTÜRK tarafından masaüstü simgelerini düzenlemek,\n" +
-                    "canlı klasör portalları oluşturmak ve kenarlara katlanabilir alanlar sağlamak\n" +
-                    "için bağımsız olarak geliştirilmiştir.\n\n" +
-                    "• 100% Bağımsız ve Taşınabilir (Zero-Install Portable)\n" +
-                    "• Masaüstüne Çift Tıklamayla Simgeleri Gizleme (Quick-Hide Desktop Icons)\n" +
-                    "• Gerçek Akrilik Buzlu Cam Efekti (Acrylic Blur Behind)\n" +
-                    "• Grup İçi Arama ve Filtreleme (Ctrl+F)\n" +
-                    "• Sekmeli Gruplar (Tabbed Groups)\n" +
-                    "• 3 Farklı Görünüm Modu (Büyük, Kompakt, Liste)\n" +
-                    "• Akıllı Sıralama (İsim, Tarih, Tür)\n" +
-                    "• Akıllı Kenar Katlanması (Zen Roll-up)\n" +
-                    "• Canlı Klasör Portalı (Folder Portal)\n" +
-                    "• Masaüstü Otomatik Sınıflandırma (Auto-Organize)\n" +
-                    "• Düzen Yedekleme & Geri Yükleme (Snapshot)\n" +
-                    "• Ultra Düşük Bellek Tüketimi (~5 MB)",
-                    "Zen Fence - Masaüstü Düzenleyici",
-                    MessageBoxButton.OK,
-                    MessageBoxImage.Information);
+                Dispatcher.BeginInvoke(new Action(() =>
+                {
+                    AboutDialog dialog = new AboutDialog();
+                    dialog.ShowDialog();
+                }));
             };
             contextMenu.Items.Add(aboutItem);
 
