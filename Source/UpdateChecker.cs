@@ -102,6 +102,30 @@ namespace Zen
                                         trayIcon.ShowBalloonTip(10000);
                                     }));
                                 }
+
+                                if (isManual)
+                                {
+                                    System.Windows.Application.Current.Dispatcher.BeginInvoke(new Action(() =>
+                                    {
+                                        MessageBoxResult res = System.Windows.MessageBox.Show(
+                                            "🚀 Zen Fence Yeni Sürüm Mevcut! (" + latestTag + ")\n\n" +
+                                            "Mevcut Sürüm: " + CurrentVersion + "\n" +
+                                            "Yeni Sürüm: " + latestTag + "\n\n" +
+                                            "Yeni sürümü indirmek için indirme sayfasını açmak ister misiniz?\n\nGeliştirici: Serkan ŞENTÜRK",
+                                            "Zen Fence Güncelleme",
+                                            MessageBoxButton.YesNo,
+                                            MessageBoxImage.Information);
+
+                                        if (res == MessageBoxResult.Yes)
+                                        {
+                                            try
+                                            {
+                                                Process.Start(new ProcessStartInfo(_latestReleaseUrl) { UseShellExecute = true });
+                                            }
+                                            catch { }
+                                        }
+                                    }));
+                                }
                             }
                             else if (isManual)
                             {
