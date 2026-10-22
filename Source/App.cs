@@ -90,6 +90,9 @@ namespace Zen
             // Setup tray icon
             SetupTrayIcon();
 
+            // Start automatic background update checker
+            UpdateChecker.Start(_trayIcon);
+
             // Setup mouse hook for desktop double-click
             SetupMouseHook(_config.DesktopDoubleClickToggle);
 
@@ -321,6 +324,11 @@ namespace Zen
                 Process.Start("explorer.exe", AppDomain.CurrentDomain.BaseDirectory);
             };
             contextMenu.Items.Add(openFolderItem);
+
+            // Check for updates
+            ToolStripMenuItem checkUpdateItem = new ToolStripMenuItem("🔄 Güncellemeleri Denetle");
+            checkUpdateItem.Click += (s, e) => UpdateChecker.CheckForUpdateAsync(_trayIcon, isManual: true);
+            contextMenu.Items.Add(checkUpdateItem);
 
             // About
             ToolStripMenuItem aboutItem = new ToolStripMenuItem("ℹ️ Zen Fence Hakkında");
