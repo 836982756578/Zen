@@ -1,0 +1,22 @@
+# Build and Binaries (Opsiyonel: Kaynak kod olarak paylaşmak için binaryleri dışlayabilir veya release kısmına koyabilirsiniz)
+*.obj
+*.pdb
+*.log
+crash.log
+Zen - Masa*.exe
+
+# Video / Büyük Medya Dosyaları
+video.mp4
+*.mp4
+
+# Kişisel Masaüstü Yedekleri ve Kullanıcı Özel Yolları
+Backups/
+*.suo
+*.user
+
+# İşletim Sistemi ve IDE Dosyaları
+.vs/
+.idea/
+Thumbs.db
+Desktop.ini
+.DS_Store
