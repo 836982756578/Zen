@@ -2,22 +2,28 @@
 
 **Geliştirici:** Serkan ŞENTÜRK  
 **Telif Hakkı:** © 2026 Serkan ŞENTÜRK. Tüm Hakları Saklıdır.  
-**Sürüm:** 1.0 Portable (Taşınabilir)
+**Sürüm:** v1.0.0 Portable (Taşınabilir)
+
+[![Download ZenFence](https://img.shields.io/badge/İndir-ZenFence.exe%20(v1.0.0)-blue?style=for-the-badge&logo=windows)](https://github.com/836982756578/Zen/releases/download/v1.0.0/ZenFence.exe)
+[![Release](https://img.shields.io/github/v/release/836982756578/Zen?style=for-the-badge&color=green)](https://github.com/836982756578/Zen/releases/tag/v1.0.0)
 
 ---
 
-Windows için %100 bağımsız, sıfır kurulum gerektiren, hafif, ultra düşük bellek tüketen (~4 MB) profesyonel masaüstü düzenleyici ve canlı klasör portalı.
+Windows için %100 bağımsız, sıfır kurulum gerektiren, hafif, ultra düşük bellek tüketen (~3.5 MB) profesyonel masaüstü düzenleyici ve canlı klasör portalı.
 
 ---
 
 ## 🌟 Tüm Özellikler
 
 1. **🖱️ Masaüstüne Çift Tıklamayla Masaüstü Simgelerini Gizleme (Desktop Quick-Hide Icons):**
-   * Masaüstünün boş bir alanına (duvar kağıdına) çift tıkladığınızda masaüstündeki simgeler anında gizlenir ve tertemiz bir duvar kağıdı görünümü elde edilir; tekrar çift tıkladığınızda anında geri gelir.
+   * Masaüstünün boş bir alanına (duvar kağıdına) çift tıkladığınızda masaüstündeki simgeler akıcı bir geçişle anında gizlenir ve tertemiz bir duvar kağıdı görünümü elde edilir; tekrar çift tıkladığınızda geri gelir.
    * Sistem tepsisi menüsünden eylem tercihi (Masaüstü Simgeleri, Zen Grupları veya Her İkisi) isteğe göre değiştirilebilir.
 
-2. **🔍 Grup İçi Hızlı Arama & Filtreleme (Ctrl+F):**
-   * Başlık çubuğundaki arama butonuna (🔍) tıklayarak veya `Ctrl+F` ile anında arama kutusunu açıp dosyalarınızı ve oyunlarınızı gerçek zamanlı filtreleyebilirsiniz.
+2. **🔒 Konumu ve Boyutu Kilitleme (Lock Position):**
+   * Düzeninizi sabitlemek için sağ tık menüsünden *"🔒 Konumu ve Boyutu Kilitle"* seçeneğini işaretleyerek grubun farenin yanlışlıkla kaydırmasına karşı kilitlenmesini sağlayabilirsiniz.
+
+3. **🔍 Grup İçi Hızlı Arama & Filtreleme (Ctrl+F):**
+   * `Ctrl+F` ile anında arama kutusunu açıp dosyalarınızı ve oyunlarınızı gerçek zamanlı filtreleyebilirsiniz.
 
 3. **🧊 Gerçek Akrilik Buzlu Cam Efekti (Windows Acrylic / Blur Behind):**
    * Windows 10/11 donanım hızlandırmalı derinlik ve arkadaki duvar kağıdını bulanıklaştıran gerçek mat cam efekti.
