@@ -58,6 +58,7 @@ namespace Zen
         public double ExpandedHeight { get; set; }
         public bool IsCollapsed { get; set; }
         public bool StayOnTop { get; set; }
+        public bool IsLocked { get; set; }
         public bool AutoHideOnEdge { get; set; }
         public string BackgroundColor { get; set; }
         public double Opacity { get; set; }

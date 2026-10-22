@@ -31,12 +31,15 @@ $references = @(
 
 $refArgs = $references | ForEach-Object { "/r:`"$_`"" }
 
+$iconPath = Join-Path $currentDir "app.ico"
+$iconArgs = if (Test-Path $iconPath) { @("/win32icon:`"$iconPath`"") } else { @() }
+
 $compileArgs = @(
     "/target:winexe",
     "/optimize+",
     "/platform:anycpu",
     "/out:`"$outExe`""
-) + $refArgs + ($sources | ForEach-Object { "`"$_`"" })
+) + $iconArgs + $refArgs + ($sources | ForEach-Object { "`"$_`"" })
 
 Write-Host "Compiling Zen Fence - Masaüstü Düzenleyici (Geliştirici: Serkan ŞENTÜRK)..." -ForegroundColor Cyan
 

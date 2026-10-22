@@ -746,6 +746,7 @@ namespace Zen
 
         private void StartResize(ResizeDirection dir, MouseButtonEventArgs e)
         {
+            if (Data.IsLocked) return;
             if (Data.IsCollapsed && dir != ResizeDirection.Left && dir != ResizeDirection.Right) return;
 
             _isResizing = true;
@@ -1033,6 +1034,8 @@ namespace Zen
             }
             else if (e.LeftButton == MouseButtonState.Pressed)
             {
+                if (Data.IsLocked) return;
+
                 _isDraggingWindow = true;
                 if (_autoHideTimer != null) _autoHideTimer.Stop();
 
@@ -2180,6 +2183,14 @@ namespace Zen
                 NotifyConfigChanged();
             };
             menu.Items.Add(stayOnTop);
+
+            MenuItem lockPos = new MenuItem { Header = "🔒 Konumu ve Boyutu Kilitle", IsCheckable = true, IsChecked = Data.IsLocked };
+            lockPos.Click += (s, e) =>
+            {
+                Data.IsLocked = lockPos.IsChecked;
+                NotifyConfigChanged();
+            };
+            menu.Items.Add(lockPos);
 
             menu.Items.Add(new Separator());
 
