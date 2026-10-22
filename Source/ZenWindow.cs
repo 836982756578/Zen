@@ -572,7 +572,12 @@ namespace Zen
                 // Tabbed Header Mode
                 if (_tabPanel == null)
                 {
-                    _tabPanel = new StackPanel { Orientation = Orientation.Horizontal, VerticalAlignment = VerticalAlignment.Center };
+                    _tabPanel = new StackPanel
+                    {
+                        Orientation = Orientation.Horizontal,
+                        VerticalAlignment = VerticalAlignment.Center,
+                        HorizontalAlignment = HorizontalAlignment.Center
+                    };
                 }
                 _tabPanel.Children.Clear();
 
@@ -584,35 +589,65 @@ namespace Zen
 
                     Border tabBorder = new Border
                     {
-                        Padding = new Thickness(8, 2, 8, 2),
-                        Margin = new Thickness(1, 0, 1, 0),
+                        Height = 22,
+                        Padding = new Thickness(10, 0, 10, 0),
+                        Margin = new Thickness(2, 0, 2, 0),
                         CornerRadius = new CornerRadius(3),
-                        Background = isActive ? new SolidColorBrush(Color.FromArgb(60, 255, 255, 255)) : Brushes.Transparent,
+                        VerticalAlignment = VerticalAlignment.Center,
+                        Background = isActive ? new SolidColorBrush(Color.FromArgb(65, 255, 255, 255)) : Brushes.Transparent,
+                        BorderBrush = isActive ? new SolidColorBrush(Color.FromArgb(40, 255, 255, 255)) : Brushes.Transparent,
+                        BorderThickness = new Thickness(1),
                         Cursor = Cursors.Hand
                     };
 
-                    StackPanel tabContent = new StackPanel { Orientation = Orientation.Horizontal };
+                    Grid tabContent = new Grid
+                    {
+                        VerticalAlignment = VerticalAlignment.Center,
+                        HorizontalAlignment = HorizontalAlignment.Center
+                    };
+
+                    StackPanel textPanel = new StackPanel
+                    {
+                        Orientation = Orientation.Horizontal,
+                        VerticalAlignment = VerticalAlignment.Center
+                    };
+
                     if (!string.IsNullOrEmpty(tab.CustomEmoji))
                     {
-                        tabContent.Children.Add(new TextBlock
+                        textPanel.Children.Add(new TextBlock
                         {
                             Text = tab.CustomEmoji + " ",
                             FontSize = 11,
-                            VerticalAlignment = VerticalAlignment.Center
+                            VerticalAlignment = VerticalAlignment.Center,
+                            Margin = new Thickness(0, 0, 2, 0)
                         });
                     }
 
-                    tabContent.Children.Add(new TextBlock
+                    textPanel.Children.Add(new TextBlock
                     {
                         Text = CleanTitle(tab.Title),
-                        Foreground = isActive ? Brushes.White : new SolidColorBrush(Color.FromArgb(170, 255, 255, 255)),
+                        Foreground = isActive ? Brushes.White : new SolidColorBrush(Color.FromArgb(180, 255, 255, 255)),
                         FontFamily = new FontFamily("Segoe UI"),
-                        FontWeight = isActive ? FontWeights.Bold : FontWeights.Normal,
+                        FontWeight = isActive ? FontWeights.SemiBold : FontWeights.Normal,
                         FontSize = 11.5,
                         VerticalAlignment = VerticalAlignment.Center
                     });
 
+                    tabContent.Children.Add(textPanel);
                     tabBorder.Child = tabContent;
+
+                    if (!isActive)
+                    {
+                        tabBorder.MouseEnter += (s, e) =>
+                        {
+                            tabBorder.Background = new SolidColorBrush(Color.FromArgb(25, 255, 255, 255));
+                        };
+                        tabBorder.MouseLeave += (s, e) =>
+                        {
+                            tabBorder.Background = Brushes.Transparent;
+                        };
+                    }
+
                     tabBorder.MouseLeftButtonDown += (s, e) =>
                     {
                         SwitchTab(tabIdx);
@@ -621,28 +656,66 @@ namespace Zen
                     _tabPanel.Children.Add(tabBorder);
                 }
 
-                Button addTabBtn = new Button
+                // Add Tab button as a sleek rounded border
+                Border addTabBtn = new Border
                 {
-                    Content = "+",
                     Width = 18,
                     Height = 18,
+                    CornerRadius = new CornerRadius(3),
                     Margin = new Thickness(3, 0, 0, 0),
                     Background = Brushes.Transparent,
-                    BorderThickness = new Thickness(0),
-                    Foreground = new SolidColorBrush(Color.FromArgb(180, 255, 255, 255)),
+                    VerticalAlignment = VerticalAlignment.Center,
                     Cursor = Cursors.Hand,
-                    FontSize = 12,
-                    FontWeight = FontWeights.Bold,
                     ToolTip = "Bu gruba yeni sekme ekle"
                 };
-                addTabBtn.Click += (s, e) => AddNewTabPrompt();
-                _tabPanel.Children.Add(addTabBtn);
 
+                TextBlock addIcon = new TextBlock
+                {
+                    Text = "+",
+                    Foreground = new SolidColorBrush(Color.FromArgb(190, 255, 255, 255)),
+                    FontSize = 13,
+                    FontWeight = FontWeights.Bold,
+                    HorizontalAlignment = HorizontalAlignment.Center,
+                    VerticalAlignment = VerticalAlignment.Center,
+                    Margin = new Thickness(0, -1, 0, 0)
+                };
+                addTabBtn.Child = addIcon;
+
+                addTabBtn.MouseEnter += (s, e) =>
+                {
+                    addTabBtn.Background = new SolidColorBrush(Color.FromArgb(35, 255, 255, 255));
+                    addIcon.Foreground = Brushes.White;
+                };
+                addTabBtn.MouseLeave += (s, e) =>
+                {
+                    addTabBtn.Background = Brushes.Transparent;
+                    addIcon.Foreground = new SolidColorBrush(Color.FromArgb(190, 255, 255, 255));
+                };
+                addTabBtn.MouseLeftButtonDown += (s, e) =>
+                {
+                    AddNewTabPrompt();
+                    e.Handled = true;
+                };
+
+                _tabPanel.Children.Add(addTabBtn);
                 _centerPanel.Children.Add(_tabPanel);
             }
             else
             {
                 // Single Title Mode
+                Grid titleGrid = new Grid
+                {
+                    VerticalAlignment = VerticalAlignment.Center,
+                    HorizontalAlignment = HorizontalAlignment.Center
+                };
+
+                StackPanel titleStack = new StackPanel
+                {
+                    Orientation = Orientation.Horizontal,
+                    VerticalAlignment = VerticalAlignment.Center,
+                    HorizontalAlignment = HorizontalAlignment.Center
+                };
+
                 if (!string.IsNullOrEmpty(Data.CustomEmoji))
                 {
                     _emojiBlock = new TextBlock
@@ -652,7 +725,7 @@ namespace Zen
                         Margin = new Thickness(0, 0, 6, 0),
                         VerticalAlignment = VerticalAlignment.Center
                     };
-                    _centerPanel.Children.Add(_emojiBlock);
+                    titleStack.Children.Add(_emojiBlock);
                 }
                 else
                 {
@@ -666,7 +739,7 @@ namespace Zen
                         VerticalAlignment = VerticalAlignment.Center,
                         Data = Geometry.Parse("M 0,2 C 0,0.9 0.9,0 2,0 L 5.5,0 L 7,2.5 L 13,2.5 C 13.8,2.5 14.5,3.2 14.5,4 L 14.5,11 C 14.5,11.8 13.8,12.5 13,12.5 L 1.5,12.5 C 0.7,12.5 0,11.8 0,11 Z")
                     };
-                    _centerPanel.Children.Add(_folderIcon);
+                    titleStack.Children.Add(_folderIcon);
                 }
 
                 _titleBlock = new TextBlock
@@ -675,11 +748,14 @@ namespace Zen
                     Foreground = Brushes.White,
                     FontFamily = new FontFamily("Segoe UI"),
                     FontWeight = FontWeights.SemiBold,
-                    FontSize = 12.5,
+                    FontSize = 12.0,
                     VerticalAlignment = VerticalAlignment.Center,
                     TextTrimming = TextTrimming.CharacterEllipsis
                 };
-                _centerPanel.Children.Add(_titleBlock);
+                titleStack.Children.Add(_titleBlock);
+
+                titleGrid.Children.Add(titleStack);
+                _centerPanel.Children.Add(titleGrid);
             }
         }
 
@@ -903,7 +979,7 @@ namespace Zen
             if (notify) NotifyConfigChanged();
         }
 
-        private void GetScreenInfo(out Rect workArea, out Rect bounds)
+        private void GetScreenInfo(out Rect workArea, out Rect bounds, out double bottomEdge)
         {
             try
             {
@@ -948,6 +1024,28 @@ namespace Zen
                         screen.Bounds.Width / dpiX,
                         screen.Bounds.Height / dpiY
                     );
+
+                    // Determine true bottom edge:
+                    // Primary monitor always has taskbar at workArea.Bottom
+                    if (screen.Primary)
+                    {
+                        bottomEdge = workArea.Bottom;
+                    }
+                    else
+                    {
+                        // Check if a secondary taskbar is active on this monitor
+                        bool hasTaskbar = false;
+                        IntPtr hSec = NativeMethods.FindWindow("Shell_SecondaryTrayWnd", null);
+                        if (hSec != IntPtr.Zero)
+                        {
+                            System.Windows.Forms.Screen secScreen = System.Windows.Forms.Screen.FromHandle(hSec);
+                            if (secScreen != null && secScreen.DeviceName == screen.DeviceName)
+                            {
+                                hasTaskbar = true;
+                            }
+                        }
+                        bottomEdge = hasTaskbar ? workArea.Bottom : bounds.Bottom;
+                    }
                     return;
                 }
             }
@@ -957,20 +1055,22 @@ namespace Zen
 
             workArea = SystemParameters.WorkArea;
             bounds = new Rect(0, 0, SystemParameters.PrimaryScreenWidth, SystemParameters.PrimaryScreenHeight);
+            bottomEdge = workArea.Bottom;
         }
 
         private void CheckDockState()
         {
             Rect workArea, bounds;
-            GetScreenInfo(out workArea, out bounds);
+            double bottomEdge;
+            GetScreenInfo(out workArea, out bounds, out bottomEdge);
 
             _isTopDocked = (Top <= workArea.Top + 15);
-            _isBottomDocked = ((Top + Height) >= workArea.Bottom - 18 || (Top + Height) >= bounds.Bottom - 18);
+            _isBottomDocked = (Math.Abs((Top + Height) - bottomEdge) <= 25 || (Top + Height) >= bottomEdge - 15);
         }
 
         private void UpdateLayoutForDocking()
         {
-            if (_mainGrid == null || _headerBorder == null || _contentAreaGrid == null) return;
+            if (_mainGrid == null || _headerBorder == null || _contentAreaGrid == null || _rootBorder == null) return;
 
             _mainGrid.Children.Clear();
 
@@ -982,11 +1082,33 @@ namespace Zen
                 Grid.SetRow(_contentAreaGrid, 0);
                 Grid.SetRow(_headerBorder, 1);
 
+                // Top docked: top edge is flat!
+                _rootBorder.CornerRadius = new CornerRadius(0, 0, 4, 4);
+                _rootBorder.BorderThickness = new Thickness(1, 0, 1, 1);
+
                 _headerBorder.CornerRadius = new CornerRadius(0, 0, 4, 4);
                 _headerBorder.BorderThickness = new Thickness(0, 1, 0, 0);
 
                 _mainGrid.Children.Add(_contentAreaGrid);
                 _mainGrid.Children.Add(_headerBorder);
+            }
+            else if (_isBottomDocked)
+            {
+                _row0.Height = GridLength.Auto;
+                _row1.Height = new GridLength(1, GridUnitType.Star);
+
+                Grid.SetRow(_headerBorder, 0);
+                Grid.SetRow(_contentAreaGrid, 1);
+
+                // Bottom docked: bottom edge is 100% FLAT against screen/taskbar!
+                _rootBorder.CornerRadius = new CornerRadius(4, 4, 0, 0);
+                _rootBorder.BorderThickness = new Thickness(1, 1, 1, 0);
+
+                _headerBorder.CornerRadius = new CornerRadius(4, 4, 0, 0);
+                _headerBorder.BorderThickness = new Thickness(0, 0, 0, 1);
+
+                _mainGrid.Children.Add(_headerBorder);
+                _mainGrid.Children.Add(_contentAreaGrid);
             }
             else
             {
@@ -995,6 +1117,10 @@ namespace Zen
 
                 Grid.SetRow(_headerBorder, 0);
                 Grid.SetRow(_contentAreaGrid, 1);
+
+                // Floating: all 4 corners rounded
+                _rootBorder.CornerRadius = new CornerRadius(4);
+                _rootBorder.BorderThickness = new Thickness(1);
 
                 _headerBorder.CornerRadius = new CornerRadius(4, 4, 0, 0);
                 _headerBorder.BorderThickness = new Thickness(0, 0, 0, 1);
@@ -1116,7 +1242,8 @@ namespace Zen
         private void OnDragMoveFinished()
         {
             Rect workArea, bounds;
-            GetScreenInfo(out workArea, out bounds);
+            double bottomEdge;
+            GetScreenInfo(out workArea, out bounds, out bottomEdge);
 
             double snapThreshold = 45.0; // Comfort zone for snapping
 
@@ -1127,18 +1254,14 @@ namespace Zen
                 _isTopDocked = true;
                 _isBottomDocked = false;
             }
-            // 2. Check Bottom Docking (snaps to workArea.Bottom, resting right above the taskbar)
+            // 2. Check Bottom Docking (snaps flush to bottomEdge with 0px gap)
             else
             {
                 double winBottom = Top + Height;
-                double taskbarTop = workArea.Bottom;
-                double screenBottomEdge = bounds.Bottom;
 
-                if (Math.Abs(winBottom - taskbarTop) <= snapThreshold ||
-                    Math.Abs(winBottom - screenBottomEdge) <= snapThreshold ||
-                    winBottom >= taskbarTop)
+                if (Math.Abs(winBottom - bottomEdge) <= snapThreshold || winBottom >= bottomEdge - 5)
                 {
-                    Top = taskbarTop - Height;
+                    Top = bottomEdge - Height;
                     _isBottomDocked = true;
                     _isTopDocked = false;
                 }
@@ -1242,9 +1365,9 @@ namespace Zen
             if (_isBottomDocked)
             {
                 Rect workArea, bounds;
-                GetScreenInfo(out workArea, out bounds);
-                double screenBottom = workArea.Bottom;
-                targetTop = screenBottom - targetHeight;
+                double bottomEdge;
+                GetScreenInfo(out workArea, out bounds, out bottomEdge);
+                targetTop = bottomEdge - targetHeight;
             }
 
             if (instant)
