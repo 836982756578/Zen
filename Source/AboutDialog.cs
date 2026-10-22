@@ -30,6 +30,16 @@ namespace Zen
             Topmost = true;
             ShowInTaskbar = false;
 
+            try
+            {
+                string icoPath = System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "app.ico");
+                if (System.IO.File.Exists(icoPath))
+                {
+                    Icon = new System.Windows.Media.Imaging.BitmapImage(new Uri(icoPath, UriKind.Absolute));
+                }
+            }
+            catch { }
+
             Border rootBorder = new Border
             {
                 Background = new SolidColorBrush(Color.FromArgb(248, 22, 22, 28)),

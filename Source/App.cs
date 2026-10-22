@@ -555,32 +555,67 @@ namespace Zen
         {
             try
             {
-                using (Bitmap bmp = new Bitmap(32, 32))
+                // 1. Load app.ico if available (exact multi-resolution vector Yin-Yang icon)
+                string icoPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "app.ico");
+                if (File.Exists(icoPath))
+                {
+                    try
+                    {
+                        return new Icon(icoPath, SystemInformation.SmallIconSize);
+                    }
+                    catch
+                    {
+                        try { return new Icon(icoPath); } catch { }
+                    }
+                }
+
+                // 2. Extract embedded icon from the running executable
+                try
+                {
+                    string exePath = Process.GetCurrentProcess().MainModule.FileName;
+                    Icon exeIcon = Icon.ExtractAssociatedIcon(exePath);
+                    if (exeIcon != null)
+                    {
+                        return exeIcon;
+                    }
+                }
+                catch { }
+
+                // 3. Fallback: Draw high-quality anti-aliased Yin-Yang icon
+                int size = 32;
+                using (Bitmap bmp = new Bitmap(size, size))
                 using (Graphics g = Graphics.FromImage(bmp))
                 {
                     g.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
+                    g.PixelOffsetMode = System.Drawing.Drawing2D.PixelOffsetMode.HighQuality;
 
-                    // Background box
-                    using (SolidBrush bgBrush = new SolidBrush(Color.FromArgb(24, 24, 32)))
-                    using (Pen borderPen = new Pen(Color.FromArgb(0, 122, 204), 2))
+                    // Dark circular background
+                    using (SolidBrush darkBg = new SolidBrush(Color.FromArgb(20, 20, 26)))
                     {
-                        g.FillRectangle(bgBrush, 2, 2, 27, 27);
-                        g.DrawRectangle(borderPen, 2, 2, 27, 27);
+                        g.FillEllipse(darkBg, 1, 1, 30, 30);
                     }
 
-                    // Header bar
-                    using (SolidBrush headBrush = new SolidBrush(Color.FromArgb(0, 122, 204)))
+                    // Outer circle: Left half black, Right half white
+                    using (SolidBrush whiteBrush = new SolidBrush(Color.FromArgb(245, 245, 250)))
+                    using (SolidBrush blackBrush = new SolidBrush(Color.FromArgb(28, 28, 36)))
+                    using (Pen outlinePen = new Pen(Color.FromArgb(140, 255, 255, 255), 1.2f))
                     {
-                        g.FillRectangle(headBrush, 3, 3, 26, 7);
-                    }
+                        // Right half white
+                        g.FillPie(whiteBrush, 2, 2, 28, 28, -90, 180);
+                        // Left half black
+                        g.FillPie(blackBrush, 2, 2, 28, 28, 90, 180);
 
-                    // Small icon grid
-                    using (SolidBrush dotBrush = new SolidBrush(Color.FromArgb(240, 240, 240)))
-                    {
-                        g.FillRectangle(dotBrush, 6, 14, 6, 5);
-                        g.FillRectangle(dotBrush, 15, 14, 6, 5);
-                        g.FillRectangle(dotBrush, 6, 21, 6, 5);
-                        g.FillRectangle(dotBrush, 15, 21, 6, 5);
+                        // Top inner circle (white)
+                        g.FillEllipse(whiteBrush, 9, 2, 14, 14);
+                        // Bottom inner circle (black)
+                        g.FillEllipse(blackBrush, 9, 16, 14, 14);
+
+                        // Small dots
+                        g.FillEllipse(blackBrush, 14, 7, 4, 4);
+                        g.FillEllipse(whiteBrush, 14, 21, 4, 4);
+
+                        // Subtle outer boundary
+                        g.DrawEllipse(outlinePen, 2, 2, 28, 28);
                     }
 
                     IntPtr hIcon = bmp.GetHicon();
