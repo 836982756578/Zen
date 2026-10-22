@@ -58,7 +58,7 @@ Windows için 100% bağımsız, sıfır kurulum gerektiren, hafif, ultra düşü
 
 ## 🛠️ Yeniden Derleme
 ```powershell
-powershell -ExecutionPolicy Bypass -File .\Zen\build.ps1
+powershell -ExecutionPolicy Bypass -File .\build.ps1
 ```
 Çıktı dosyaları:
 - `Zen.exe`

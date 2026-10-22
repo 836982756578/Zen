@@ -46,15 +46,11 @@ if ($process.ExitCode -eq 0) {
     Write-Host "BUILD SUCCESSFUL!" -ForegroundColor Green
     Write-Host "Output: $outExe" -ForegroundColor Green
     
-    # Also create 'Zen - Masaüstü Düzenleyici.exe' and copy to main folder
+    # Also create 'Zen - Masaüstü Düzenleyici.exe'
     $longNameExe = Join-Path $currentDir "Zen - Masaüstü Düzenleyici.exe"
     Copy-Item $outExe $longNameExe -Force
 
-    $parentDir = Split-Path -Parent $currentDir
-    Copy-Item $outExe (Join-Path $parentDir "Zen.exe") -Force
-    Copy-Item $outExe (Join-Path $parentDir "Zen - Masaüstü Düzenleyici.exe") -Force
-
-    Write-Host "Copied to: Zen.exe & Zen - Masaüstü Düzenleyici.exe" -ForegroundColor Green
+    Write-Host "Outputs ready: Zen.exe & Zen - Masaüstü Düzenleyici.exe" -ForegroundColor Green
 } else {
     Write-Host "BUILD FAILED! ExitCode: $($process.ExitCode)" -ForegroundColor Red
     exit $process.ExitCode
