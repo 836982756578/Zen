@@ -1,4 +1,4 @@
-# Build script for Zen - Masaüstü Düzenleyici (Geliştirici: Serkan ŞENTÜRK)
+# Build script for Zen Fence - Masaüstü Düzenleyici (Geliştirici: Serkan ŞENTÜRK)
 $ErrorActionPreference = "Stop"
 
 $currentDir = Split-Path -Parent $MyInvocation.MyCommand.Path
@@ -6,7 +6,7 @@ if (-not $currentDir) { $currentDir = Get-Location }
 
 $csc = "C:\Windows\Microsoft.NET\Framework64\v4.0.30319\csc.exe"
 $wpfPath = "C:\Windows\Microsoft.NET\Framework64\v4.0.30319\WPF"
-$outExe = Join-Path $currentDir "Zen.exe"
+$outExe = Join-Path $currentDir "ZenFence.exe"
 $sourceDir = Join-Path $currentDir "Source"
 
 if (-not (Test-Path $csc)) {
@@ -38,7 +38,7 @@ $compileArgs = @(
     "/out:`"$outExe`""
 ) + $refArgs + ($sources | ForEach-Object { "`"$_`"" })
 
-Write-Host "Compiling Zen - Masaüstü Düzenleyici (Geliştirici: Serkan ŞENTÜRK)..." -ForegroundColor Cyan
+Write-Host "Compiling Zen Fence - Masaüstü Düzenleyici (Geliştirici: Serkan ŞENTÜRK)..." -ForegroundColor Cyan
 
 $process = Start-Process -FilePath $csc -ArgumentList $compileArgs -NoNewWindow -Wait -PassThru
 
@@ -46,11 +46,10 @@ if ($process.ExitCode -eq 0) {
     Write-Host "BUILD SUCCESSFUL!" -ForegroundColor Green
     Write-Host "Output: $outExe" -ForegroundColor Green
     
-    # Also create 'Zen - Masaüstü Düzenleyici.exe'
-    $longNameExe = Join-Path $currentDir "Zen - Masaüstü Düzenleyici.exe"
-    Copy-Item $outExe $longNameExe -Force
+    # Also keep Zen.exe for compatibility
+    Copy-Item $outExe (Join-Path $currentDir "Zen.exe") -Force
 
-    Write-Host "Outputs ready: Zen.exe & Zen - Masaüstü Düzenleyici.exe" -ForegroundColor Green
+    Write-Host "Outputs ready: ZenFence.exe & Zen.exe" -ForegroundColor Green
 } else {
     Write-Host "BUILD FAILED! ExitCode: $($process.ExitCode)" -ForegroundColor Red
     exit $process.ExitCode

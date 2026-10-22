@@ -2183,11 +2183,11 @@ namespace Zen
 
             menu.Items.Add(new Separator());
 
-            MenuItem aboutZen = new MenuItem { Header = "ℹ️ Zen Hakkında (Serkan ŞENTÜRK)" };
+            MenuItem aboutZen = new MenuItem { Header = "ℹ️ Zen Fence Hakkında (Serkan ŞENTÜRK)" };
             aboutZen.Click += (s, e) =>
             {
                 MessageBox.Show(
-                    "Zen - Masaüstü Düzenleyici v1.0\n\n" +
+                    "Zen Fence - Masaüstü Düzenleyici v1.0\n\n" +
                     "🌟 Geliştirici: Serkan ŞENTÜRK\n" +
                     "Telif Hakkı: © 2026 Serkan ŞENTÜRK. Tüm Hakları Saklıdır.\n\n" +
                     "Bu uygulama Serkan ŞENTÜRK tarafından bağımsız olarak geliştirilmiştir.\n\n" +
@@ -2197,7 +2197,7 @@ namespace Zen
                     "• Gerçek Akrilik Buzlu Cam Efekti\n" +
                     "• Sekmeli Gruplar & Hızlı Arama\n" +
                     "• Ultra Düşük Bellek Tüketimi (~5 MB)",
-                    "Zen - Masaüstü Düzenleyici",
+                    "Zen Fence - Masaüstü Düzenleyici",
                     MessageBoxButton.OK,
                     MessageBoxImage.Information);
             };

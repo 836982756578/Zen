@@ -1,4 +1,4 @@
-# Zen - Masaüstü Düzenleyici ☯️
+# Zen Fence - Masaüstü Düzenleyici ☯️
 
 **Geliştirici:** Serkan ŞENTÜRK  
 **Telif Hakkı:** © 2026 Serkan ŞENTÜRK. Tüm Hakları Saklıdır.  
@@ -6,7 +6,7 @@
 
 ---
 
-Windows için 100% bağımsız, sıfır kurulum gerektiren, hafif, ultra düşük bellek tüketen (~4 MB) profesyonel masaüstü düzenleyici ve canlı klasör portalı.
+Windows için %100 bağımsız, sıfır kurulum gerektiren, hafif, ultra düşük bellek tüketen (~4 MB) profesyonel masaüstü düzenleyici ve canlı klasör portalı.
 
 ---
 
@@ -61,5 +61,5 @@ Windows için 100% bağımsız, sıfır kurulum gerektiren, hafif, ultra düşü
 powershell -ExecutionPolicy Bypass -File .\build.ps1
 ```
 Çıktı dosyaları:
+- `ZenFence.exe`
 - `Zen.exe`
-- `Zen - Masaüstü Düzenleyici.exe`

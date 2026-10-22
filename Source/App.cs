@@ -48,13 +48,13 @@ namespace Zen
                 };
 
                 bool createdNew;
-                _mutex = new Mutex(true, "Zen_DesktopOrganizer_SingleInstance_9921", out createdNew);
+                _mutex = new Mutex(true, "ZenFence_DesktopOrganizer_SingleInstance_9921", out createdNew);
 
                 if (!createdNew)
                 {
                     System.Windows.MessageBox.Show(
-                        "Zen - Masaüstü Düzenleyici zaten arka planda çalışıyor!\nEkranın sağ altındaki bildirim alanından (saat yanı ☯️ simgesi) kontrol edebilirsiniz.\n\nGeliştirici: Serkan ŞENTÜRK",
-                        "Zen - Masaüstü Düzenleyici",
+                        "Zen Fence - Masaüstü Düzenleyici zaten arka planda çalışıyor!\nEkranın sağ altındaki bildirim alanından (saat yanı ☯️ simgesi) kontrol edebilirsiniz.\n\nGeliştirici: Serkan ŞENTÜRK",
+                        "Zen Fence - Masaüstü Düzenleyici",
                         MessageBoxButton.OK,
                         MessageBoxImage.Information);
                     return;
@@ -111,14 +111,14 @@ namespace Zen
         private void SetupTrayIcon()
         {
             _trayIcon = new NotifyIcon();
-            _trayIcon.Text = "Zen - Masaüstü Düzenleyici | Serkan ŞENTÜRK";
+            _trayIcon.Text = "Zen Fence - Masaüstü Düzenleyici | Serkan ŞENTÜRK";
             _trayIcon.Icon = GenerateAppIcon();
             _trayIcon.Visible = true;
 
             ContextMenuStrip contextMenu = new ContextMenuStrip();
 
             // Header title
-            ToolStripMenuItem titleItem = new ToolStripMenuItem("☯️ Zen - Masaüstü Düzenleyici");
+            ToolStripMenuItem titleItem = new ToolStripMenuItem("☯️ Zen Fence - Masaüstü Düzenleyici");
             titleItem.Font = new Font(titleItem.Font, System.Drawing.FontStyle.Bold);
             titleItem.Enabled = false;
             contextMenu.Items.Add(titleItem);
@@ -323,11 +323,11 @@ namespace Zen
             contextMenu.Items.Add(openFolderItem);
 
             // About
-            ToolStripMenuItem aboutItem = new ToolStripMenuItem("ℹ️ Zen Hakkında");
+            ToolStripMenuItem aboutItem = new ToolStripMenuItem("ℹ️ Zen Fence Hakkında");
             aboutItem.Click += (s, e) =>
             {
                 System.Windows.MessageBox.Show(
-                    "Zen - Masaüstü Düzenleyici v1.0\n\n" +
+                    "Zen Fence - Masaüstü Düzenleyici v1.0\n\n" +
                     "🌟 Geliştirici: Serkan ŞENTÜRK\n" +
                     "Telif Hakkı: © 2026 Serkan ŞENTÜRK. Tüm Hakları Saklıdır.\n\n" +
                     "Bu uygulama Serkan ŞENTÜRK tarafından masaüstü simgelerini düzenlemek,\n" +
@@ -345,7 +345,7 @@ namespace Zen
                     "• Masaüstü Otomatik Sınıflandırma (Auto-Organize)\n" +
                     "• Düzen Yedekleme & Geri Yükleme (Snapshot)\n" +
                     "• Ultra Düşük Bellek Tüketimi (~5 MB)",
-                    "Zen - Masaüstü Düzenleyici",
+                    "Zen Fence - Masaüstü Düzenleyici",
                     MessageBoxButton.OK,
                     MessageBoxImage.Information);
             };

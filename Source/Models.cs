@@ -108,7 +108,7 @@ namespace Zen
 
         public AppConfig()
         {
-            AppName = "Zen - Masaüstü Düzenleyici";
+            AppName = "Zen Fence - Masaüstü Düzenleyici";
             Creator = "Serkan ŞENTÜRK";
             Author = "Serkan ŞENTÜRK";
             Copyright = "© 2026 Serkan ŞENTÜRK. Tüm Hakları Saklıdır.";

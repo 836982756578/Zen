@@ -1,17 +1,17 @@
-// Zen - Masaüstü Düzenleyici
+// Zen Fence - Masaüstü Düzenleyici
 // Geliştirici: Serkan ŞENTÜRK
 // Telif Hakkı © 2026 Serkan ŞENTÜRK. Tüm Hakları Saklıdır.
 
 using System.Reflection;
 using System.Runtime.InteropServices;
 
-[assembly: AssemblyTitle("Zen - Masaüstü Düzenleyici")]
+[assembly: AssemblyTitle("Zen Fence - Masaüstü Düzenleyici")]
 [assembly: AssemblyDescription("Serkan ŞENTÜRK tarafından geliştirilen bağımsız, taşınabilir ve akıllı masaüstü düzenleyici")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Serkan ŞENTÜRK")]
-[assembly: AssemblyProduct("Zen - Masaüstü Düzenleyici")]
+[assembly: AssemblyProduct("Zen Fence - Masaüstü Düzenleyici")]
 [assembly: AssemblyCopyright("Telif Hakkı © 2026 Serkan ŞENTÜRK. Tüm Hakları Saklıdır.")]
-[assembly: AssemblyTrademark("Zen - Serkan ŞENTÜRK")]
+[assembly: AssemblyTrademark("Zen Fence - Serkan ŞENTÜRK")]
 [assembly: AssemblyCulture("")]
 
 [assembly: ComVisible(false)]

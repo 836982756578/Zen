@@ -42,7 +42,7 @@ namespace Zen
 
                         if (config.ZenGroups != null && config.ZenGroups.Count > 0)
                         {
-                            config.AppName = "Zen - Masaüstü Düzenleyici";
+                            config.AppName = "Zen Fence - Masaüstü Düzenleyici";
                             config.Creator = "Serkan ŞENTÜRK";
                             config.Author = "Serkan ŞENTÜRK";
                             config.Copyright = "© 2026 Serkan ŞENTÜRK. Tüm Hakları Saklıdır.";
@@ -65,7 +65,7 @@ namespace Zen
             try
             {
                 if (config == null) return;
-                config.AppName = "Zen - Masaüstü Düzenleyici";
+                config.AppName = "Zen Fence - Masaüstü Düzenleyici";
                 config.Creator = "Serkan ŞENTÜRK";
                 config.Author = "Serkan ŞENTÜRK";
                 config.Copyright = "© 2026 Serkan ŞENTÜRK. Tüm Hakları Saklıdır.";
@@ -84,7 +84,7 @@ namespace Zen
         {
             AppConfig config = new AppConfig
             {
-                AppName = "Zen - Masaüstü Düzenleyici",
+                AppName = "Zen Fence - Masaüstü Düzenleyici",
                 Creator = "Serkan ŞENTÜRK",
                 Author = "Serkan ŞENTÜRK",
                 Copyright = "© 2026 Serkan ŞENTÜRK. Tüm Hakları Saklıdır.",
@@ -181,7 +181,7 @@ namespace Zen
             try
             {
                 string startupFolder = Environment.GetFolderPath(Environment.SpecialFolder.Startup);
-                string shortcutPath = Path.Combine(startupFolder, "Zen - Masaüstü Düzenleyici.lnk");
+                string shortcutPath = Path.Combine(startupFolder, "Zen Fence - Masaüstü Düzenleyici.lnk");
 
                 if (!enable)
                 {
@@ -200,7 +200,7 @@ namespace Zen
                     dynamic shortcut = shell.CreateShortcut(shortcutPath);
                     shortcut.TargetPath = System.Diagnostics.Process.GetCurrentProcess().MainModule.FileName;
                     shortcut.WorkingDirectory = AppDomain.CurrentDomain.BaseDirectory;
-                    shortcut.Description = "Zen - Masaüstü Düzenleyici (Geliştirici: Serkan ŞENTÜRK)";
+                    shortcut.Description = "Zen Fence - Masaüstü Düzenleyici (Geliştirici: Serkan ŞENTÜRK)";
                     shortcut.Save();
                 }
             }
