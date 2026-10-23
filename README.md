@@ -1,11 +1,11 @@
-# Zen Fence - Masaüstü Düzenleyici ☯️
+# ☯️ Zen Fence - Masaüstü Düzenleyici & Çit Yöneticisi
 
 **Geliştirici:** Serkan ŞENTÜRK  
 **Telif Hakkı:** © 2026 Serkan ŞENTÜRK. Tüm Hakları Saklıdır.  
-**Sürüm:** v1.0.0 Portable (Taşınabilir)
+**Sürüm:** v1.0.1 Portable (Taşınabilir)
 
-[![Download ZenFence](https://img.shields.io/badge/İndir-ZenFence.exe%20(v1.0.0)-blue?style=for-the-badge&logo=windows)](https://github.com/836982756578/Zen/releases/download/v1.0.0/ZenFence.exe)
-[![Release](https://img.shields.io/github/v/release/836982756578/Zen?style=for-the-badge&color=green)](https://github.com/836982756578/Zen/releases/tag/v1.0.0)
+[![Download ZenFence](https://img.shields.io/badge/İndir-ZenFence.exe%20(v1.0.1)-blue?style=for-the-badge&logo=windows)](https://github.com/836982756578/Zen-Fence/releases/download/v1.0.1/ZenFence.exe)
+[![Release](https://img.shields.io/github/v/release/836982756578/Zen-Fence?style=for-the-badge&color=green)](https://github.com/836982756578/Zen-Fence/releases/tag/v1.0.1)
 
 ---
 
